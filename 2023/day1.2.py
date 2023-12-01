@@ -1,4 +1,5 @@
 lines = open('day1.input').read().split('\n')
+#lines = open('day1.2.input').read().split('\n')
 
 nums = {
         '0':0,
@@ -29,26 +30,32 @@ def starts_a(val):
 def is_a(val):
     return val in nums
 
+def descend(current,rest):
+    if is_a(current):
+        return nums[current]
+    elif starts_a(current):
+        if len(rest):
+            current += rest[0]
+            rest = rest[1:]
+            return descend(current,rest)
+        else:
+            return False
+    else:
+        return False
+
 values = []
 for line in lines:
     if len(line) == 0:
         continue
     stack = ''
     numbers = []
-    for c in line:
-        if is_a(c):
-            numbers.append(nums[c])
-            stack = ''
-        else:
-            stack += c
-            if is_a(stack):
-                numbers.append(nums[stack])
-                stack = ''
-            else:
-                if starts_a(stack):
-                    continue
-                else:
-                    stack = c
+    pointer = 0
+    while pointer < len(line):
+        c = line[pointer]
+        result = descend(c,line[pointer+1:])
+        if result:
+            numbers.append(result)
+        pointer += 1
         
     first = numbers[0]
     last = numbers[-1]
