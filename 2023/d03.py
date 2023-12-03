@@ -29,7 +29,6 @@ def line_seek(line,pos):
     
     # If mid is a number, then we must concat everything.
     if mid.isdigit():
-        print('found: ', [int(left+mid+right)])
         return [int(left+mid+right)]
     
     # If not, then we have at most two digits.
@@ -40,25 +39,49 @@ def line_seek(line,pos):
     if right.isdigit():
         result.append(int(right))
     
-    print('found ',result)
     return result
 
-part_sum = 0
+# part_sum = 0
+# for i,line in enumerate(lines):
+#     cursor = 0
+#     while cursor < len(line):
+#         if line[cursor] not in ['0','1','2','3','4','5','6','7','8','9','.']:
+#             # We have found a symbol. Now let us look for the numbers around it.
+#             # Are we at the top? If not we need to search above.
+#             if i > 0:
+#                 part_sum += sum(line_seek(lines[i-1],cursor))
+            
+#             # check for numbers either side of the current position.
+#             part_sum += sum(line_seek(line,cursor))
+
+#             # Check below, unless we are at the bottom.
+#             if i < len(lines):
+#                 part_sum += sum(line_seek(lines[i+1],cursor))
+#         cursor += 1
+           
+# print(part_sum)
+
+# Answer part 2
+ratio_sum = 0
 for i,line in enumerate(lines):
     cursor = 0
     while cursor < len(line):
-        if line[cursor] not in ['0','1','2','3','4','5','6','7','8','9','.']:
+        if line[cursor] == '*':
             # We have found a symbol. Now let us look for the numbers around it.
             # Are we at the top? If not we need to search above.
+            gear_list = []
             if i > 0:
-                part_sum += sum(line_seek(lines[i-1],cursor))
+                gear_list += line_seek(lines[i-1],cursor)
             
             # check for numbers either side of the current position.
-            part_sum += sum(line_seek(line,cursor))
+            gear_list += line_seek(line,cursor)
 
             # Check below, unless we are at the bottom.
             if i < len(lines):
-                part_sum += sum(line_seek(lines[i+1],cursor))
+                gear_list += line_seek(lines[i+1],cursor)
+            
+            # We only care if there are exactly two part numbers
+            if len(gear_list) == 2:
+                ratio_sum += gear_list[0] * gear_list[1]
         cursor += 1
-                           
-print(part_sum)
+print(ratio_sum)
