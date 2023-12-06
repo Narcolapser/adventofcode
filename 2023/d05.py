@@ -1,39 +1,51 @@
-# Sort the lines.
-# Start with an empty array. 
+# lets break this up logically. Let's make range objects.
+# Given a value, can you identify whether that value is inside your range?
+# If it is inside your range, what does it map to? 
+# If none of the range objects identify with the value, then we know it is a straight pass through.
 
 segments = open('d05.sample').read().split('\n\n')
+segments = open('d05.input').read().split('\n\n')
 
 seeds = [int(i) for i in segments[0].split(':')[1].split(' ') if i.isdigit()]
 
-for segment in segments[1:]:
-    raw_lines = segment.split('\n')
-    lines = []
-    for line in raw_lines[1:]:
-        lines.append([int(i) for i in line.split(' ') if i.isdigit()])
-    lines.sort()
-    
-    # Now that we have the lines sorted, lets build out the mappings.
-    operating_line = lines.pop(0)
-    i = 0
-    stash = []
-    mapping = {}
-    while True:
-        if i < operating_line[0]:
-            if len(stash):
-                mapping[i] = stash.pop(0)
-            else:
-                mapping[i] = i
-            i += 1
-        else:
-            for j in range(operating_line[2]):
-                mapping[i] = operating_line[1]+j
-                i += 1
+class Range():
+    def __init__(self,range_line):
+        self.destination, self.source, self.range = [int(i) for i in range_line.split(' ')]
 
-            if len(lines) == 0:
-                break
-            else:
-                operating_line = lines.pop(0)
+    def __contains__(self,value):
+        if value < self.source:
+            return False
+        elif value > self.source + self.range - 1:
+            return False
+        else:
+            return True
+
+    def map(self,value):
+        if value not in self:
+            return False
+        return self.destination + (value - self.source )
+
+class RangeMap():
+    def __init__(self, ranges):
+        self.ranges = ranges
     
-    while len(stash):
-        mapping[i] = stash.pop(0)
-    print(mapping)
+    def map(self,value):
+        for range in self.ranges:
+            if value in range:
+                return range.map(value)
+        return value
+
+maps = []
+for segment in segments[1:]:
+    ranges = [Range(line) for line in segment.split('\n')[1:]]
+    maps.append(RangeMap(ranges))
+
+locations = []
+
+for seed in seeds:
+    value = seed
+    for rmap in maps:
+        value = rmap.map(value)
+    locations.append(value)
+
+print(min(locations))
