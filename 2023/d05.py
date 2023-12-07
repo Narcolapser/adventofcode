@@ -69,13 +69,35 @@ if __name__ == '__main__':
         seed_range = seed_digits.pop(0)
         seed_ranges.append((start,seed_range))
 
-    maps = []
-    for segment in segments[1:]:
-        ranges = [Range(line) for line in segment.split('\n')[1:] if ' ' in line]
-        maps.append(RangeMap(ranges))
+        f = open('d05.sample')
+        segments = f.read().split('\n\n')
+        f.close()
+        maps = []
+        for segment in segments[1:]:
+            name = segment.split('\n')[0]
+            ranges = [Range(line) for line in segment.split('\n')[1:] if ' ' in line]
+            maps.append(RangeMap(name,ranges,None))
+
+        rmap = maps.pop(0)
+        cursor = rmap
+        while len(maps):
+            cursor.next_range = maps.pop(0)
+            cursor = cursor.next_range
 
     # given a seed range start from it's lowest point, map that.
     # Now find the start of the first range. Skip every number between the lowest and the start
     # Find that range's lowest point and map that. Skip the remaining mappings.
     # Map the start of the next un-mapped range to the bottom of the next range.
     # Repeat this until we get to the end of the seed range.
+    locations = []
+    for i,sr in enumerate(seed_ranges):
+        cursor = sr[0]
+        max_range = sum(sr)
+        while cursor < max_range:
+            result = rmap.map_extended(cursor)
+            locations.append(result['map'])
+            cursor += result['more']
+            print(f'searching: {cursor}/{max_range}',end='\r')
+        print(f'Completed {i} of {len(seed_ranges)}')
+        print()
+    print(min(locations))
