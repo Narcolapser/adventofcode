@@ -117,15 +117,14 @@ class JokerHand(Hand):
         
         # Remove jokers from the hand.
         jokerless = self.hand.replace('J','')
+        joker_count = 5 - len(jokerless)
+
+        # If the string is 1 or 0, then we have either 4 or 5 jokers. Either way we can make 5 of a kind.
+        if joker_count >= 4:
+            return Hand_Types.FIVE_OF_A_KIND
         
         # Make a set of the cards. This is useful for all of the possible configurations.
         hand_set = set(jokerless)
-        print(f'Jokerless hand: {jokerless} and set {hand_set}')
-
-        # Test 5 of a kind
-        if len(hand_set) == 1:
-            # All non jokers were the same. Lets make 5 of a kind.
-            return Hand_Types.FIVE_OF_A_KIND
         
         # Make a dictionary of how many matches there are of each card. This is useful for finding sets.
         matches = {card:0 for card in hand_set}
@@ -134,6 +133,29 @@ class JokerHand(Hand):
         
         # Find the largest set
         largest = max(matches.values())
+
+        if joker_count == 3:
+            # With 3 jokers I can do either 4 of a kind with 2 different cards, or 5 of a kind if I have a pair.
+            if len(hand_set) == 1:
+                return Hand_Types.FIVE_OF_A_KIND
+            else:
+                return Hand_Types.FOUR_OF_A_KIND
+        
+        if joker_count == 2:
+            # Similar rules as above. if everything but the jokers is the same it's 5 of a kind.
+            if len(hand_set) == 1:
+                return Hand_Types.FIVE_OF_A_KIND
+            
+            # If there are only 2 distinct cards we have at least a pair. We can build that pair into a quad.
+            if len(hand_set) == 2:
+                return Hand_Types.FOUR_OF_A_KIND
+
+            # Lastly we have 3 distinct cards. Best we can get is 3 of a kind.
+            return Hand_Types.THREE_OF_A_KIND            
+        
+        # Final the single Joker options
+        if largest == 4:
+            return Hand_Types.FIVE_OF_A_KIND
 
         # if we have 3 of a kind we could do full house or 4 of a kind. The former is higher ranked so we will always choose it.
         if largest == 3:
@@ -148,7 +170,7 @@ class JokerHand(Hand):
             return Hand_Types.THREE_OF_A_KIND
         
         # At this point we have 4 disjointed cards. The best we can manage is two pair.
-        return Hand_Types.TWO_PAIR
+        return Hand_Types.ONE_PAIR
 
         
 
@@ -156,12 +178,11 @@ class JokerHand(Hand):
 if __name__ == '__main__':
     lines = open('d07.sample').read().split('\n')
     lines = open('d07.input').read().split('\n')
-    hands = [Hand(line.split(' ')[0]) for line in lines]
+    hands = [JokerHand(line.split(' ')[0]) for line in lines]
     bids = { line.split(' ')[0]:int(line.split(' ')[1]) for line in lines }
     hands.sort()
     total_winnings = 0
     for hand in hands:
-        print(f'hand {hand.hand} position: {hands.index(hand)}')
         rank = hands.index(hand) + 1
         total_winnings += bids[hand.hand] * rank
     print(f'Total winnings: {total_winnings}')
