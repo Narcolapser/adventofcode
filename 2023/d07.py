@@ -178,11 +178,17 @@ class JokerHand(Hand):
 if __name__ == '__main__':
     lines = open('d07.sample').read().split('\n')
     lines = open('d07.input').read().split('\n')
-    hands = [JokerHand(line.split(' ')[0]) for line in lines]
+    hands = [Hand(line.split(' ')[0]) for line in lines]
+    #hands = [JokerHand(line.split(' ')[0]) for line in lines]
     bids = { line.split(' ')[0]:int(line.split(' ')[1]) for line in lines }
     hands.sort()
-    total_winnings = 0
+    # total_winnings = 0
+    # for hand in hands:
+    #     rank = hands.index(hand) + 1
+    #     total_winnings += bids[hand.hand] * rank
+    # print(f'Total winnings: {total_winnings}')
+    outs = open('d07.john-diff','w')
     for hand in hands:
-        rank = hands.index(hand) + 1
-        total_winnings += bids[hand.hand] * rank
-    print(f'Total winnings: {total_winnings}')
+        outs.write(f'{hand.hand} {bids[hand.hand]}\n')
+    outs.close()
+
