@@ -1,5 +1,5 @@
 import unittest
-from d07 import Hand, Hand_Types
+from d07 import Hand, Hand_Types, JokerHand
 
 class Test_Range(unittest.TestCase):
     def test_hand_type(self):
@@ -74,6 +74,25 @@ class Test_Range(unittest.TestCase):
         self.assertEqual(disarray[2],hand3)
         self.assertEqual(disarray[3],hand4)
         self.assertEqual(disarray[4],hand5)
+    
+    def test_joker_hand_value(self):
+        hand1 = JokerHand('32T3K')
+        hand2 = JokerHand('KTJJT')
+
+        self.assertEqual(hand1.get_value(),20302100340)
+        self.assertEqual(hand2.get_value(),64010010110)
+    
+    def test_joker_type(self):
+        fiver = JokerHand('AAAAJ')
+        four = JokerHand('AA8AJ')
+        full = JokerHand('233J2')
+        three = JokerHand('TTJ98')
+        onepair = JokerHand('A23J4')
+        self.assertEqual(fiver.get_type(),Hand_Types.FIVE_OF_A_KIND)
+        self.assertEqual(four.get_type(),Hand_Types.FOUR_OF_A_KIND)
+        self.assertEqual(full.get_type(),Hand_Types.FULL_HOUSE)
+        self.assertEqual(three.get_type(),Hand_Types.THREE_OF_A_KIND)
+        self.assertEqual(onepair.get_type(),Hand_Types.ONE_PAIR)
 
 if __name__ == '__main__':
     unittest.main()
