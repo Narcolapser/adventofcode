@@ -56,8 +56,9 @@ if __name__ == '__main__':
     rows = [Row(line) for line in lines]
     print(f'Number of rows: {len(rows)}')
     increment = 0
-    for row in rows:
+    for i,row in enumerate(rows):
         next_value = row.expand()
+        print(f'row: {i} extrapolated value of {next_value}')
         increment += next_value
     
     print(f'historic increment: {increment}')

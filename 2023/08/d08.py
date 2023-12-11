@@ -8,7 +8,8 @@ def link_to_bits(line):
     return [parts[0],left, right]
 
 path = lines[0]
-start = lines[2].split(' ')[0]
+#start = lines[2].split(' ')[0]
+start = 'AAA'
 parsed_links = [link_to_bits(link) for link in lines[2:]]
 
 links = {link[0]:{'L':link[1],'R':link[2]} for link in parsed_links}
