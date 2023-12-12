@@ -63,13 +63,15 @@ def DirToPos(pos,dir):
 
 def ForwardFinder(options, previous):
     previous_map = {'r':'l','l':'r','u':'d','d':'u'}
-    print(f'I came from {previous} and I have the current options: {options}')
+    #print(f'I came from {previous} and I have the current options: {options}')
     for key in previous_map:
         if previous == key:
             return [i for i in options if i != previous_map[key]][0]
 
 if __name__ == '__main__':
-    maze = open('sample2').read().split('\n')
+    #maze = open('sample1').read().split('\n')
+    #maze = open('sample2').read().split('\n')
+    maze = open('input').read().split('\n')
     start = None
     for y,line in enumerate(maze):
         for x,char in enumerate(line):
@@ -88,13 +90,13 @@ if __name__ == '__main__':
     print(f'Moving {cur_dir} to {next_pos}. I have taken {steps} steps.')
     while next_pos != start:
         new_neighbors = NeighborFetcher(maze, cur_pos)
-        next_dirs = PathFinder(new_neighbors,maze[cur_pos[0]][cur_pos[1]])
-        print(f'me {maze[cur_pos[1]][cur_pos[0]]} my neighbors {new_neighbors} my next paths {next_dirs} ')
+        next_dirs = PathFinder(new_neighbors,maze[cur_pos[1]][cur_pos[0]])
+        #print(f'me {maze[cur_pos[1]][cur_pos[0]]} my neighbors {new_neighbors} my next paths {next_dirs} ')
         next_dir = ForwardFinder(next_dirs,cur_dir)
         next_pos = DirToPos(cur_pos,next_dir)
 
         cur_pos = next_pos
         cur_dir = next_dir
         steps += 1
-        print(f'Moving {next_dir} to {next_pos}. I have taken {steps} steps.')
-    
+        print(f'Moving {next_dir} to {next_pos}. I have taken {steps} steps.\n')
+    print(f'Furthest point would be {steps/2}')
