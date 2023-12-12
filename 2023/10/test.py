@@ -27,7 +27,8 @@ class TestPipes(unittest.TestCase):
         self.assertEqual(PathFinder({'u':'L','l':'L'},'J'),{'l'})
 
         self.assertEqual(PathFinder({'u':'7','l':'L','d':'J'},'7'),{'l','d'})
-        self.assertEqual(PathFinder({'r':'7','l':'-','d':'J'},'F'),{'d','l'})
+        self.assertEqual(PathFinder({'r':'7','l':'-','d':'J'},'F'),{'r','d'})
+        self.assertEqual(PathFinder({'r':'7','l':'-','d':'J'},'F'),{'r','d'})
     
     def test_dir_to_pos(self):
         self.assertEqual(DirToPos((1,1),'r'),(2,1))
