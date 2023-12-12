@@ -64,6 +64,8 @@ def DirToPos(pos,dir):
 def ForwardFinder(options, previous):
     previous_map = {'r':'l','l':'r','u':'d','d':'u'}
     #print(f'I came from {previous} and I have the current options: {options}')
+    if len(options) != 2:
+        print('It is broken!')
     for key in previous_map:
         if previous == key:
             return [i for i in options if i != previous_map[key]][0]
@@ -71,7 +73,7 @@ def ForwardFinder(options, previous):
 if __name__ == '__main__':
     #maze = open('sample1').read().split('\n')
     #maze = open('sample2').read().split('\n')
-    maze = open('input').read().split('\n')
+    maze = open('10/input').read().split('\n')
     start = None
     for y,line in enumerate(maze):
         for x,char in enumerate(line):
@@ -82,8 +84,8 @@ if __name__ == '__main__':
             break
     
     starting_dirs = PathFinder(NeighborFetcher(maze,start),maze[start[0]][start[1]])
-    #cur_dir = random.choice(list(starting_dirs))
-    cur_dir = 'r'
+    cur_dir = random.choice(list(starting_dirs))
+    #cur_dir = 'r'
     cur_pos = DirToPos(start,cur_dir)
     next_pos = cur_pos
     steps = 1
