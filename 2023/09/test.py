@@ -55,12 +55,23 @@ class TestRow(unittest.TestCase):
 
         self.assertFalse(next_row.get_descendant())
     
+    def test_get_next_row_bigger(self):
+        r = Row('8  31  64  97  122  140  166  230  372  629  1012  1471  1846  1802')
+        descendant = r.get_descendant()
+        comp = Row('23  33  33  25  18  26  64  142  257  383  459  375  -44')
+        self.assertTrue(descendant == comp)
+    
     def test_expand(self):
         start = Row('0   3   6   9  12  15')
         end = Row('0   3   6   9  12  15  18')
         expand_value = start.expand()
         self.assertEqual(expand_value, 18)
         self.assertTrue(end == start)
+
+    def test_parse(self):
+        row = Row('23  33  33  25  18  26  64  142  257  383  459  375  -44')
+        values = [23, 33, 33, 25, 18, 26, 64, 142, 257, 383, 459, 375, -44]
+        self.assertEqual(row.values,values)
 
 if __name__ == '__main__':
     unittest.main()
