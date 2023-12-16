@@ -109,7 +109,7 @@ class Vertical_Splitter(Square):
             self.send('u')
 
 if __name__ == '__main__':
-    lines = open('sample').read().split('\n')
+    lines = open('input').read().split('\n')
     rows = []
     for line in lines:
         row = [create_square(c) for c in line]
@@ -131,6 +131,8 @@ if __name__ == '__main__':
         for i,row in enumerate(rows[:-1]):
             upper = rows[i][cursor]
             lower = rows[i+1][cursor]
+            upper.set_neighbor(lower,'d')
+            lower.set_neighbor(upper,'u')
         cursor += 1
     
     # Strike the top left from the left
