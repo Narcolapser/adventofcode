@@ -1,3 +1,5 @@
+import sys
+
 def create_square(char):
     if char == '.':
         return EmptySquare(char)
@@ -109,6 +111,7 @@ class Vertical_Splitter(Square):
             self.send('u')
 
 if __name__ == '__main__':
+    sys.setrecursionlimit(20000)
     lines = open('input').read().split('\n')
     rows = []
     for line in lines:
