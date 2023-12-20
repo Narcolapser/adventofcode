@@ -11,6 +11,16 @@ class TestPart(unittest.TestCase):
         self.assertEqual(part.s,2876)
         self.assertEqual(part.visited,set())
 
+    def test_part_value(self):
+        p1 = Part('{x=787,m=2655,a=1222,s=2876}')
+        p3 = Part('{x=2036,m=264,a=79,s=2244}')
+        p5 = Part('{x=2127,m=1623,a=2188,s=1013}')
+
+        self.assertEqual(p1.value,7540)
+        self.assertEqual(p3.value,4623)
+        self.assertEqual(p5.value,6951)
+        
+
 class TestWorkflow(unittest.TestCase):
     def test_workflow_parse(self):
         line = 'px{a<2006:qkq,m>2090:A,rfg}'

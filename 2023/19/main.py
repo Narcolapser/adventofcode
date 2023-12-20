@@ -11,6 +11,10 @@ class Part:
         self.a = int(a.split('=')[1])
         self.s = int(s.split('=')[1])
         self.visited = set()
+    
+    @property
+    def value(self):
+        return sum([self.x, self.a, self.m, self.s])
 
 class Workflow:
     name = None
@@ -68,3 +72,22 @@ class Rule:
                 matched = False
 
         return matched
+
+if __name__ == '__main__':
+    wf_lines, part_lines = open('sample').read().split('\n\n')
+    workflows = [Workflow(i) for i in wf_lines.split('\n')]
+    workflow_dict = {w.name:w for w in workflows}
+    parts = [Part(i) for i in part_lines.split('\n')]
+    rejected = []
+    accepted = []
+    for part in parts:
+        action = workflow_dict['in'](part)
+        while action not in ['A','R']:
+            action = workflow_dict[action](part)
+        if action == 'A':
+            accepted.append(part)
+        else:
+            rejected.append(part)
+    
+    value = sum([p.value for p in accepted])
+    print(f'Sum of accepted parts: {value}')
