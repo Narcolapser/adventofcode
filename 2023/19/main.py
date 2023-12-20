@@ -74,7 +74,8 @@ class Rule:
         return matched
 
 if __name__ == '__main__':
-    wf_lines, part_lines = open('sample').read().split('\n\n')
+    #wf_lines, part_lines = open('sample').read().split('\n\n')
+    wf_lines, part_lines = open('input').read().split('\n\n')
     workflows = [Workflow(i) for i in wf_lines.split('\n')]
     workflow_dict = {w.name:w for w in workflows}
     parts = [Part(i) for i in part_lines.split('\n')]
