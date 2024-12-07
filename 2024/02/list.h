@@ -1,6 +1,8 @@
 #ifndef LIST_H
 #define LIST_H
 
+#include <stdbool.h>
+
 // Define the Node struct
 typedef struct node {
     int val;
@@ -16,5 +18,7 @@ int length(Node *l);
 void print_list(Node *current);
 void sort(Node **head);
 int count_instances(Node *list, int val);
+bool sorted_check(Node *head);
+bool spacing_check(Node *head);
 
 #endif // LIST_H

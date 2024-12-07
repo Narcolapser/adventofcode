@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <stdbool.h>
 
 typedef struct node {
     int val;
@@ -146,4 +147,31 @@ int count_instances(Node *list, int val) {
     } else {
         return 0;
     }
+}
+
+bool sorted_check(Node *head) {
+    if (!head || !head->next) return true; // Empty or single element
+
+    bool ascending = true, descending = true;
+    Node *current = head;
+
+    while (current->next) {
+        if (current->val > current->next->val) ascending = false;
+        if (current->val < current->next->val) descending = false;
+        current = current->next;
+    }
+
+    return ascending || descending;
+}
+
+bool spacing_check(Node *head) {
+    if (!head || !head->next) return true; // Empty or single element
+
+    Node *current = head;
+    while (current->next) {
+        if (abs(current->val - current->next->val) > 3) return false;
+        current = current->next;
+    }
+
+    return true;
 }
