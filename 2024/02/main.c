@@ -1,72 +1,42 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <stdbool.h>
 #include "list.h"
 
-void read_file_to_list(const char *filename, Node **list) {
-    FILE *file = fopen(filename, "r");
-    if (file == NULL) {
-        perror("Error opening file");
-        exit(2);
-    }
-
-    int ch;
-    int val = 0;
-    while ((ch = fgetc(file)) != EOF) {
-        if (ch >= '0' && ch <='9') {
-            int num = ch - '0';
-            val = val * 10 + num;
-        } else {
-            if (val)
-                push(list, val);
-            val = 0;
-        }
-    }
-    if (val)
-        push(list,val);
-    fclose(file);
-}
+#define MAX_LINE_LENGTH 256 // Define maximum line length for a line in the file
 
 int main() {
-    Node *head = NULL; // Start with an empty list
+    const char *fname = "./input.txt"; // Path to the file
+    FILE *file = fopen(fname, "r");
 
-    read_file_to_list("./input.txt", &head);
-
-    // Split list into two lists:
-    Node *left = NULL;
-    Node *right = NULL;
-    print_list(head);
-    while(length(head)){
-        push(&left,pop(&head,0));
-        push(&right,pop(&head,0));
+    if (!file) {
+        fprintf(stderr, "Error: Could not open file %s\n", fname);
+        return EXIT_FAILURE;
     }
 
-    // Print the list to verify
-    print_list(left);
-    print_list(right);
+    char line[MAX_LINE_LENGTH];
+    int safe_count = 0;
 
-    // Solution for part 1
-    // sort(&left);
-    // sort(&right);
+    // Read each line from the file
+    while (fgets(line, sizeof(line), file)) {
+        // Remove the newline character, if present
+        size_t len = strlen(line);
+        if (len > 0 && line[len - 1] == '\n') {
+            line[len - 1] = '\0';
+        }
 
-    // print_list(left);
-    // print_list(right);
-
-    // int sum_dif = 0;
-    // while(length(left)) {
-    //     int cur_dif = abs(pop(&left,0)-pop(&right,0));
-    //     printf("Current diff: %d\n", cur_dif);
-    //     sum_dif += cur_dif;
-    // }
-    // printf("The sum of the differences is: %d", sum_dif);
-
-    // Solution for part 2
-    int diff = 0;
-    while(length(left)) {
-        int val = pop(&left, 0);
-        // printf("Searching for: %d\n", val);
-        diff += count_instances(right, val) * val;
+        // Perform some action with the line
+        Node *head = NULL;
+        parse_line(&head, line);
+        bool sorted = sorted_check(head);
+        bool spaced = spacing_check(head);
+        bool safe = sorted && spaced;
+        safe ? safe_count++ : safe_count;
+        printf("Processing line: %s, sorted: %s spaced: %s\n", line, sorted?"true":"false", spaced?"true":"false" );
     }
-    printf("Alt diff is: %d\n", diff);
+    printf("there were %d safe lines\n", safe_count);
 
-    return 0;
+    fclose(file);
+    return EXIT_SUCCESS;
 }

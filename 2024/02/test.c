@@ -61,6 +61,13 @@ void test_spacing_check_invalid_spacing() {
     ASSERT_FALSE(spacing_check(&n1));
 }
 
+void test_spacing_check_invalid_spacing_two_the_same() {
+    Node n3 = {4, NULL};
+    Node n2 = {4, &n3};
+    Node n1 = {1, &n2};
+    ASSERT_FALSE(spacing_check(&n1));
+}
+
 // Implementation
 void run_test(void (*test)(), const char *test_name) {
     printf("Running test: %s\n", test_name);
@@ -79,6 +86,7 @@ int main() {
     run_test(test_spacing_check_single_element, "test_spacing_check_single_element");
     run_test(test_spacing_check_valid_spacing, "test_spacing_check_valid_spacing");
     run_test(test_spacing_check_invalid_spacing, "test_spacing_check_invalid_spacing");
+    run_test(test_spacing_check_invalid_spacing_two_the_same, "test_spacing_check_invalid_spacing_two_the_same");
 
     printf("All tests passed!\n");
     return 0;

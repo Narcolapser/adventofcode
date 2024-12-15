@@ -170,8 +170,30 @@ bool spacing_check(Node *head) {
     Node *current = head;
     while (current->next) {
         if (abs(current->val - current->next->val) > 3) return false;
+        if (current->val == current->next->val) return false;
         current = current->next;
     }
 
     return true;
+}
+
+bool is_number(char val) {
+    return val >= '0' && val <= '9';
+}
+
+void parse_line(Node **head, char *line) {
+    int i = 0;
+    int val = 0;
+    while (line[i] != '\0') {
+        if (is_number(line[i])) {
+            int num = line[i] - '0';
+            val = val * 10 + num;
+        } else {
+            if (val)
+                push(head, val);
+            val = 0;
+        }
+        i++;
+    }
+    push(head, val);
 }

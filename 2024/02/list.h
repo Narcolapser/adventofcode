@@ -20,5 +20,6 @@ void sort(Node **head);
 int count_instances(Node *list, int val);
 bool sorted_check(Node *head);
 bool spacing_check(Node *head);
+void parse_line(Node **head, char *line);
 
 #endif // LIST_H
