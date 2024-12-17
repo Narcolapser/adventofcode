@@ -32,7 +32,7 @@ bool is_cmd_char(char ch) {
 }
 
 bool is_number(char ch) {
-    return ch >= '0' && ch <= '9'
+    return ch >= '0' && ch <= '9';
 }
 
 int main() {
