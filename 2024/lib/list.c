@@ -25,7 +25,22 @@ void push(List *list, void *data) {
     list->head = new_node;
 }
 
-void pop(List* list) {
+void append(List *list, void *data) {
+    Node *new_node = malloc(sizeof(Node));
+    new_node->data = malloc(list->data_size);
+    memcpy(new_node->data, data, list->data_size);
+    if (list->head == NULL) {
+        list->head = new_node;
+    } else {
+        Node *current = list->head;
+        while (current->next != NULL) {
+            current = current->next;
+        }
+        current->next = new_node;
+    }
+}
+
+void *pop(List* list) {
     if (list->head == NULL) {
         return NULL; // List is empty
     }
@@ -41,17 +56,26 @@ void pop(List* list) {
     return data; // This is where the memory leak is.
 }
 
-void append(List *list, void *data) {
-    Node *new_node = malloc(sizeof(Node));
-    new_node->data = malloc(list->data_size);
-    memcpy(new_node->data, data, list->data_size);
-    if (list->head == NULL) {
-        list->head = new_node;
-    } else {
-        Node *current = list->head;
-        while (current->next != NULL) {
-            current = current->next;
-        }
-        current->next = new_node;
+void *get(List *list, int index) {
+    Node *cur = list->head;
+    while(cur != NULL && index-->0){
+        cur = cur->next;
     }
+    if (cur==NULL) {
+        return NULL;
+    }
+    
+    void *data = malloc(list->data_size);
+    memcpy(data, cur->data, list->data_size);
+    return data;
+}
+
+int length(List *list) {
+    int len = 0;
+    Node *cur = list->head;
+    while(cur != NULL) {
+        cur = cur->next;
+        len++;
+    }
+    return len;
 }

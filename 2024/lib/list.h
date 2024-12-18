@@ -17,10 +17,12 @@ typedef struct list {
 } List;
 
 // Declare functions
-void init_list();
+void init_list(List *list, size_t data_size);
 void free_list(List *list);
 void push(List *list, void *data);
-void pop(List *list);
 void append(List *list, void *data);
+void *pop(List *list);
+void *get(List *list, int index);
+int length(List *list);
 
 #endif // LIST_H
