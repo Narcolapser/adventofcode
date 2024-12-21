@@ -1,0 +1,4 @@
+I will make a rule evaluator. It will be constructed with a pair of numbers, the rule, and then accept a list of numbers and return whether the list of updates passes the rule.
+
+I will also write a method for extracting the middle number out of a list. Should be easy since all the lists appear to be odd.
+
